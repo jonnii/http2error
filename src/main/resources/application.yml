@@ -1,3 +1,25 @@
 micronaut:
   application:
     name: http2error
+  netty:
+    event-loops:
+      default:
+        prefer-native-transport: true
+
+  ssl:
+    enabled: true
+    buildSelfSigned: true
+
+  server:
+    http-version: 2.0
+    cors:
+      enabled: true
+
+logger:
+  levels:
+    io.micronaut.context: WARN
+    io.micronaut.core.reflect: WARN
+
+endpoints:
+  health:
+    details-visible: ANONYMOUS

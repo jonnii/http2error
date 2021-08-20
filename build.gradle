@@ -35,6 +35,11 @@ dependencies {
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+
+    // BCPKIX is required for JDK 16+ because the self signed certificate providers
+    // in java 16, we can remove this dependency once we are on a java 16 native
+    // version of netty
+    runtimeOnly("org.bouncycastle:bcpkix-jdk15on:1.69")
 }
 
 
