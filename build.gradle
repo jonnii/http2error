@@ -41,20 +41,23 @@ dependencies {
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    runtimeOnly("io.netty:netty-tcnative:2.0.40.Final")
-    runtimeOnly("io.netty:netty-tcnative-boringssl-static:2.0.40.Final")
+//    runtimeOnly("io.netty:netty-tcnative:2.0.40.Final")
+//    runtimeOnly("io.netty:netty-tcnative-boringssl-static:2.0.40.Final")
+//
+//    OperatingSystem os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem;
+//
+//    if (os.isMacOsX()) {
+//        runtimeOnly("io.netty:netty-transport-native-kqueue:osx-x86_64")
+//        runtimeOnly("io.netty:netty-tcnative-boringssl-static:2.0.40.Final:osx-x86_64")
+//    }
+//
+//    if (os.isLinux()) {
+//        runtimeOnly("io.netty:netty-transport-native-epoll:linux-x86_64")
+//        runtimeOnly("io.netty:netty-tcnative-boringssl-static:2.0.40.Final:linux-x86_64")
+//    }
 
-    OperatingSystem os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem;
-
-    if (os.isMacOsX()) {
-        runtimeOnly("io.netty:netty-transport-native-kqueue:osx-x86_64")
-        runtimeOnly("io.netty:netty-tcnative-boringssl-static:2.0.40.Final:osx-x86_64")
-    }
-
-    if (os.isLinux()) {
-        runtimeOnly("io.netty:netty-transport-native-epoll:linux-x86_64")
-        runtimeOnly("io.netty:netty-tcnative-boringssl-static:2.0.40.Final:linux-x86_64")
-    }
+    implementation("io.micronaut:micronaut-tracing")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-statsd")
 
     // BCPKIX is required for JDK 16+ because the self signed certificate providers
     // in java 16, we can remove this dependency once we are on a java 16 native

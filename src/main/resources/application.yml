@@ -1,16 +1,6 @@
 micronaut:
   application:
     name: http2error
-  netty:
-    event-loops:
-      default:
-        prefer-native-transport: true
-
-  ssl:
-    enabled: true
-    buildSelfSigned: true
-    netty:
-      use-native-transport: true
 
   server:
     cors:

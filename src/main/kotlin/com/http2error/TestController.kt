@@ -3,46 +3,47 @@ package com.http2error
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.context.ServerRequestContext
 import io.micronaut.scheduling.TaskExecutors
 import io.micronaut.scheduling.annotation.ExecuteOn
-import kotlinx.coroutines.delay
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 @Controller
-class TestController {
+open class TestController {
+    private val LOGGER: Logger = LoggerFactory.getLogger(TestController::class.java)
+
     @Get("things")
     @ExecuteOn(TaskExecutors.IO)
-    suspend fun doThings(
-        @QueryValue("opt") opt: String
+    fun doThings(
+        @QueryValue("opt") opt: String,
+        @Header("x-opt") cHeader: String
     ): Thing {
-        delay(5L)
-        val header = getHeader()
-        delay(5L)
-
-        return Thing(
-            opt,
-            header
-        )
-    }
-
-    private suspend fun getHeader(): String {
-        delay(5L)
-        delay(5L)
-        delay(5L)
-        delay(5L)
+        Thread.sleep(2)
 
         val currentRequest = ServerRequestContext.currentRequest<HttpRequest<Any>>().orElseGet {
             error("Expected a current http server request")
         }
 
-        delay(5L)
+        val header = currentRequest.headers["x-opt"].toString()
 
-        return currentRequest.headers["x-opt"].toString()
+        if (header != cHeader) {
+            LOGGER.info("Headers dont match")
+            error("headers dont match")
+        }
+
+        return Thing(
+            opt,
+            header,
+            cHeader
+        )
     }
 
     data class Thing(
         val query: String,
-        val header: String
+        val header: String,
+        val cHeader: String
     )
 }
