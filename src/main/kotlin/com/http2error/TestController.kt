@@ -10,6 +10,8 @@ import io.micronaut.scheduling.TaskExecutors
 import io.micronaut.scheduling.annotation.ExecuteOn
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.Optional
+import java.util.function.Function
 
 @Controller
 open class TestController {
@@ -21,7 +23,13 @@ open class TestController {
         @QueryValue("opt") opt: String,
         @Header("x-opt") cHeader: String
     ): Thing {
-        Thread.sleep(2)
+        Thread.sleep(1000)
+
+        repeat(10) {
+            ServerRequestContext.currentRequest<HttpRequest<Any>>().orElseGet {
+                error("Expected a current http server request")
+            }
+        }
 
         val currentRequest = ServerRequestContext.currentRequest<HttpRequest<Any>>().orElseGet {
             error("Expected a current http server request")
